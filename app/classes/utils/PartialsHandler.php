@@ -5,7 +5,7 @@ namespace Utils;
 class PartialHandler {
 
      public static string $partial;
-     public static string $partialsPath = APP_ROOT . '/pages/partials/';
+     public static string $partialsPath = APP_ROOT . DIRECTORY_SEPARATOR . 'pages' . DIRECTORY_SEPARATOR .  'partials' . DIRECTORY_SEPARATOR;
 
      public static function render($partial){
           self::$partial = $partial;

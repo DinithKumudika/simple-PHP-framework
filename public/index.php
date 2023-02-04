@@ -1,22 +1,45 @@
 <?php
 
 // entry point for the application
-require '../app/config/app.config.php';
+require '../app/init.php';
+
+use Classes\Core\Router;
+use Classes\Core\Dbh;
 
 session_start();
 
-$uri = $_SERVER['REQUEST_URI'];
-$uri = parse_url(explode(APP_NAME, $uri)[1])['path'];
+$config = require ('../app/config/config.php');
 
-echo $uri;
-echo APP_ROOT;
+$db = new Dbh($config['database']);
 
-$routes = [
-     '/' => APP_ROOT . DIRECTORY_SEPARATOR .'controllers' . DIRECTORY_SEPARATOR . 'index.php',
-     '/login' => APP_ROOT . DIRECTORY_SEPARATOR .'controllers' . DIRECTORY_SEPARATOR . 'login.php',
-     '/signup' => APP_ROOT . DIRECTORY_SEPARATOR .'controllers' . DIRECTORY_SEPARATOR . 'signup.php'
-];
+$router = new Router();
 
-if(array_key_exists($uri, $routes)){
-     include $routes[$uri];
-}
+$router->addRoute('/', 'index');
+$router->addRoute('/login' , 'login');
+$router->addRoute('/signup', 'signup');
+
+$router->route();
+
+// $uri = $_SERVER['REQUEST_URI'];
+// $uri = parse_url(explode(APP_NAME, $uri)[1])['path'];
+
+// $routes = [
+//      '/' => APP_ROOT . DIRECTORY_SEPARATOR .'controllers' . DIRECTORY_SEPARATOR . 'index.php',
+//      '/login' => APP_ROOT . DIRECTORY_SEPARATOR .'controllers' . DIRECTORY_SEPARATOR . 'login.php',
+//      '/signup' => APP_ROOT . DIRECTORY_SEPARATOR .'controllers' . DIRECTORY_SEPARATOR . 'signup.php'
+// ];
+
+// function route($uri, $routes){
+//      if(array_key_exists($uri, $routes)){
+//           include $routes[$uri];
+//      }
+//      else{
+//           http_response_code(404);
+//           require APP_ROOT . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . '404.php';
+//           die();
+//      }
+// }
+
+// route($uri, $routes);
+
+
